@@ -31,7 +31,7 @@
           .sorted(Map.Entry.comparingByValue());
    ```
 
-3. Primitive arrays to list
+3. Primitive arrays to list, IntStream, LongStream  [Doc](https://docs.oracle.com/javase/8/docs/api/java/util/stream/IntStream.html)
 
    ```java
    // e.g. int array, Arrays.stream
@@ -66,4 +66,61 @@
    }
    ```
 
+7. use flatMap to Stream, [Doc](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#flatMap-java.util.function.Function-)
+
+   ```java
+   // convert {{1,2}, {3,4}} -> flatMap -> {1,2,3,4}
+   Stream<String[]> temp = Arrays.stream(doubleArray);
+   Stream<String> stringStream = temp.flatMap(x -> Arrays.stream(x));
+   ```
+
+8. Optional.map or filter, [Doc](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html)
+
+   ```java
+   Optional.ofNullable("a").map(String::toUpperCase).get();  //"A"
+   // deep map: flatMap
+   Optional.ofNullable("a").map(m -> m.map(String::toUpperCase)).get();  //"A"
+   Optional.ofNullable("a").filter(g -> g.equals("b")); //Optional.empty
+   ```
+
+9. Collectors.joining 
+
+   ```java
+   //{a,b}
+           String result = list.stream().map(x -> x.getName())
+   			.collect(Collectors.joining(", ", "{", "}"));
+   ```
+
+10. convert a primitive array to list
+
+   ```java
+   // resolve boxing issue, Arrays.asList(number) reutrn List<int[]>
+   int[] number = {1,2,3};
+   Arrays.stream(number).boxed().collect(Collectors.toList());
+   ```
+
    ​
+
+   #### Java8 Date API
+
+   1. Why do we need a new date and time library](https://www.oracle.com/technetwork/articles/java/jf14-date-time-2125367.html)
+
+      ###### In old days, we use the following classic Date and Calendar APIs to represent and manipulate date.
+
+      - `java.util.Date` – date and time, print with default time-zone.
+      - `java.util.Calendar` – date and time, more methods to manipulate date.
+      - `java.text.SimpleDateFormat` – formatting (date -> text), parsing (text -> date) for date and calendar.
+
+      ###### In Java 8, a new series of date and time APIs ([JSR310](https://jcp.org/en/jsr/detail?id=310) and inspired by Joda-time) are created in the new `java.time` package.
+
+      - `java.time.LocalDate` – date without time, no time-zone.
+      - `java.time.LocalTime` – time without date, no time-zone.
+      - `java.time.LocalDateTime` – date and time, no time-zone.
+      - `java.time.ZonedDateTime` – date and time, with time-zone.
+      - `java.time.DateTimeFormatter` – formatting (date -> text), parsing (text -> date) for java.time
+      - `java.time.Instant` – date and time for machine, seconds passed since the Unix epoch time (midnight of January 1, 1970 UTC)
+      - `java.time.Duration` – Measures time in seconds and nanoseconds.
+      - `java.time.Period` – Measures time in years, months and days.
+      - `java.time.TemporalAdjuster` – Adjust date.
+
+   2. ​
