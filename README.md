@@ -123,4 +123,41 @@
       - `java.time.Period` – Measures time in years, months and days.
       - `java.time.TemporalAdjuster` – Adjust date.
 
-   2. ​
+   2. compare use java8, [Doc](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#compareTo-java.util.Date-)
+
+      ```java
+      // LocalDate, LocalTime and LocalDateTime
+      // use isBefore(), isAfter(), isEqual(), compareTo()
+      LocalDate date1 = LocalDate.of(2018, 12, 01);
+      LocalDate date2 = LocalDate.of(2018, 12, 02);
+      date1.isAfter(date2);    //false
+      ```
+
+   3. get current date
+
+      ```java
+      Date date = new Date();
+      Calendar cal = Calendar.getInstance();
+      // in java8+
+      LocalDateTime now = LocalDateTime.now();
+      LocalDate localDate = LocalDate.now();
+      ```
+
+   4. Date conversion,[DOC](https://stackoverflow.com/questions/2580925/simpledateformat-parsing-date-with-z-literal)
+
+      ```java
+      // String -> Date
+      SimpleDateFormat.parse(String);
+      // Date -> String
+      SimpleDateFormat.format(Date);
+      // in java8
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+      LocalDate localDate = LocalDate.parse("04/10/2018", formatter);  //if not formatter, default, ISO_LOCAL_DATE
+      // with time zone, use java.time.instant directly
+      Instant instant = Instant.parse("2018-10-04T22:51:00Z");  //println: 2018-10-04T22:51:00Z
+      LocalDateTime result = LocalDateTime.ofInstant(instant, ZoneId.of(ZnoeOffset.UTC.getId()));
+      result.toLocalDate();
+      // 'Z' suffix means UTC
+      ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("Europe/Athens"));  //2016-08-16T18:23:01+03:00[Europe/Athens]
+      zonedDateTime.getZone();  //+08:00
+      ```
